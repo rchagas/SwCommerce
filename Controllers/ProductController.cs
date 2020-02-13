@@ -47,5 +47,26 @@ namespace ApiTest.Controllers
             }
             else return BadRequest(ModelState);
         }
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Product>> Put(
+            [FromBody] Product product)
+        {
+            if(ModelState.IsValid)
+            {
+                await _productService.UpdateAsync(product);
+                return product;
+            }
+            else return BadRequest(ModelState);
+        }
+        [HttpDelete]
+        [Route("")]
+        public async Task<ActionResult<Product>> Delete(
+            [FromBody] Product product)
+        {
+            var obj = await _productService.FindByIdAsync(product.Id);
+            await _productService.DeleteAsync(product.Id);
+            return obj;
+        }
     }
 }

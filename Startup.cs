@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SwCommerce.Models;
+using SwCommerce.Services;
 
 namespace SwCommerce
 {
@@ -19,6 +22,7 @@ namespace SwCommerce
         {
             Configuration = configuration;
         }
+         readonly string AllowSpecificOrigins = "_AllowSpecificOrigins";
 
         public IConfiguration Configuration { get; }
 
@@ -26,6 +30,25 @@ namespace SwCommerce
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<ProductService>();
+
+            services.AddDbContext<SwCommerceContext>(options => 
+                options.UseMySql(Configuration.GetConnectionString("SwCommerceContext"),
+                builder => builder.MigrationsAssembly("SwCommerce")));
+
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,13 +62,17 @@ namespace SwCommerce
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseCors(AllowSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+
+
+            app.UseMvc();
         }
     }
 }

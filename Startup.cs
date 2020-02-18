@@ -33,11 +33,14 @@ namespace SwCommerce
 
             services.AddScoped<ProductService>();
 
+            services.AddScoped<OfferService>();
+
             services.AddDbContext<SwCommerceContext>(options => 
                 options.UseMySql(Configuration.GetConnectionString("SwCommerceContext"),
                 builder => builder.MigrationsAssembly("SwCommerce")));
 
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddCors(options =>
             {

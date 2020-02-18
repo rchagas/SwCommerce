@@ -14,5 +14,7 @@ namespace SwCommerce.Models
         [Range(0.01,int.MaxValue, ErrorMessage="Price must be greater than zero")]
         public decimal Price { get; set; }
         public string Image { get; set; }
+        public int OfferId { get; set; }
+        public Offer Offer { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace SwCommerce.Models
         {
         }
         public DbSet<Product> Product { get; set; }
+        public DbSet<Offer> Offer { get; set; }
     }
 }

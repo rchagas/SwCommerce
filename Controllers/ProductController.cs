@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -5,18 +6,23 @@ using Microsoft.Extensions.Logging;
 using SwCommerce.Models;
 using SwCommerce.Services;
 
-namespace ApiTest.Controllers
+namespace SwCommerce.Controllers
 {           
     [ApiController]
     [Route("api/[controller]")] 
     public class ProductController : Controller
     {
 
-        public readonly ProductService _productService;
+        private readonly ProductService _productService;
+        private readonly OfferService _offerService;
         private readonly ILogger<ProductController> _logger;
-        public ProductController(ProductService productService, ILogger<ProductController> logger)
+        public ProductController(
+            ProductService productService,
+            OfferService offerService, 
+            ILogger<ProductController> logger)
         {
             this._productService = productService;
+            this._offerService = offerService;
             this._logger = logger;
         }
         [HttpGet]
@@ -42,6 +48,7 @@ namespace ApiTest.Controllers
         {
             if(ModelState.IsValid)
             {
+                product.Offer = await _offerService.FindByIdAsync(product.OfferId);
                 await _productService.AddAsync(product);
                 return product;
             }
@@ -54,6 +61,8 @@ namespace ApiTest.Controllers
         {
             if(ModelState.IsValid)
             {
+                product.Offer = await _offerService.FindByIdAsync(product.OfferId); 
+                System.Diagnostics.Debug.WriteLine(product);   
                 await _productService.UpdateAsync(product);
                 return product;
             }

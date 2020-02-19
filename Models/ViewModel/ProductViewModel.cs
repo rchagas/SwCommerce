@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace SwCommerce.Models
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;      
+namespace SwCommerce.Models.ViewModel
 {
-    public class Product
+    public class ProductViewModel
     {
-        [Key]
         public int Id { get; set; }
         [Required(ErrorMessage="Field Required")]
         [MaxLength(100,ErrorMessage="Field must be up 100 characters")]
@@ -15,11 +14,5 @@ namespace SwCommerce.Models
         public decimal Price { get; set; }
         public string Image { get; set; }
         public int OfferId { get; set; }
-        public Offer Offer { get; set; }
-
-        public Product()
-        {
-            
-        }
     }
 }

@@ -35,6 +35,10 @@ namespace SwCommerce.Models
         //Default 0 sem desconto
         public decimal Discount { get; set; }
 
+        public Offer()
+        {
+            
+        }
         public Offer(
             int Id,
             string Name,

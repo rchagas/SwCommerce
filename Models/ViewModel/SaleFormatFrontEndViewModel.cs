@@ -1,13 +1,13 @@
 
 namespace SwCommerce.Models.ViewModel{
 
-    public class SalesCartViewModel{
+    public class SaleFormatFrontEndViewModel{
         public int Amount {get; set;}
         public int ProductId {get; set;}
-        public SalesCartViewModel(){
+        public SaleFormatFrontEndViewModel(){
 
         }
-        public SalesCartViewModel(int a, int b){
+        public SaleFormatFrontEndViewModel(int a, int b){
             this.Amount = a;
             this.ProductId = b;
         }

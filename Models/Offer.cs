@@ -14,9 +14,9 @@ namespace SwCommerce.Models
         [MinLength(3,ErrorMessage="Field must have at least 3 characters")]
         public string Name { get; set; }
         /*Valor para ser avaliado como sera avaliado a variável desconto:
-            1 - Desconto Bruto subtraido do Valor Total de cada Pacote
-            2 - Desconto Percentual subtraido do Valor Total de cada Pacote
-            3 - Valor Bruto do pacote e.g: 10 reais
+            1 - Desconto Bruto a ser subtraido do Valor Total de cada Pacote
+            2 - Desconto Percentual a ser subtraido do Valor Total de cada Pacote
+            3 - Valor Bruto do pacote e.g: Valor X na compra de 3 unidades
         */
         [Required(ErrorMessage="Field Required")]
         [Range(1,2, ErrorMessage="TypeOffer must be value registered")]
@@ -31,8 +31,7 @@ namespace SwCommerce.Models
         [Required(ErrorMessage="Field Required")]
         [Range(1,int.MaxValue, ErrorMessage="Price must be greater than zero")]
         public int PackSize { get; set; }
-        //Valor do Desconto
-        //Default 0 sem desconto
+        //Valor do Desconto a ser subtraido
         public decimal Discount { get; set; }
 
         public Offer()
@@ -55,6 +54,13 @@ namespace SwCommerce.Models
             this.PackSize = PackSize;
             this.Discount = Discount;
         }
+        /*
+            Função decimal calcDiscount(int amount, Product product)
+            retorna o valor bruto de desconto a ser subtraido da compra baseado 
+            na oferta cadastrada.
+            params: int amount: Quantidade do produto na compra.
+                    Product product: Produto na compra.
+        */
         public decimal calcDiscount(int amount, Product product)
         {
             if(amount >= MinSale)

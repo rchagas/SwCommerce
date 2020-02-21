@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using SwCommerce.Models;
 using SwCommerce.Models.ViewModel;
 using SwCommerce.Services;
-using System.Text.Json;
 
 namespace SwCommerce.Controllers
 {           

@@ -19,7 +19,21 @@ namespace SwCommerce.Models
 
         public Product()
         {
-            
+        }
+        public Product(
+            int Id,
+            string Name,
+            decimal Price,
+            string Image,
+            Offer Offer
+        )
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Price = Price;
+            this.Image = Image;
+            this.OfferId = Offer.Id;
+            this.Offer = Offer;
         }
     }
 }

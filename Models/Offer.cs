@@ -4,6 +4,12 @@ using SwCommerce.Services.Exceptions;
 
 namespace SwCommerce.Models
 {
+    public enum TypeOffer{
+        ValorBruto,
+        Percentual,
+        ValorTotal
+
+    }
     public class Offer
     {  
         //Aqui será implementada promoções
@@ -19,8 +25,8 @@ namespace SwCommerce.Models
             3 - Valor Bruto do pacote e.g: Valor X na compra de 3 unidades
         */
         [Required(ErrorMessage="Field Required")]
-        [Range(1,2, ErrorMessage="TypeOffer must be value registered")]
-        public int TypeOffer { get; set; }
+        [Range(1,3, ErrorMessage="TypeOffer must be value registered")]
+        public TypeOffer TypeOffer { get; set; }
         //Quantidade minima de compra para adicao do desconto
         //Default: 1
         [Required(ErrorMessage="Field Required")]
@@ -41,7 +47,7 @@ namespace SwCommerce.Models
         public Offer(
             int Id,
             string Name,
-            int TypeOffer,
+            TypeOffer TypeOffer,
             int MinSale,
             int PackSize,
             decimal Discount
@@ -65,15 +71,15 @@ namespace SwCommerce.Models
         {
             if(amount >= MinSale)
             {
-                if(TypeOffer == 1)
+                if(TypeOffer == TypeOffer.ValorBruto)
                 {
                     return Discount;
                 }
-                else if(TypeOffer == 2)
+                else if(TypeOffer == TypeOffer.Percentual)
                 {
                     return (amount/PackSize)*product.Price*Discount;
                 }
-                else if(TypeOffer == 3)
+                else if(TypeOffer == TypeOffer.ValorTotal)
                 {
                     return (amount/PackSize)*(PackSize*product.Price-Discount);
                 }

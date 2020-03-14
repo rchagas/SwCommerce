@@ -61,8 +61,7 @@ namespace SwCommerce.Controllers
         {
             if(ModelState.IsValid)
             {
-                product.Offer = await _offerService.FindByIdAsync(product.OfferId); 
-                System.Diagnostics.Debug.WriteLine(product);   
+                product.Offer = await _offerService.FindByIdAsync(product.OfferId);  
                 await _productService.UpdateAsync(product);
                 return product;
             }

@@ -30,9 +30,12 @@ namespace SwCommerce.Controllers
         {   
             if(ModelState.IsValid)
             {
-                foreach(var mod in model){
-                    Product product = await this._productService.FindByIdAsync(mod.ProductId);
-                    cart.CartAddProduct(new SaleViewModel(mod.Amount,product));
+                if(model!= null)
+                {
+                    foreach(var mod in model){
+                        Product product = await this._productService.FindByIdAsync(mod.ProductId);
+                        cart.CartAddProduct(new SaleViewModel(mod.Amount,product));
+                    }
                 }
                 return cart;
             }

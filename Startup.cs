@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+
 using SwCommerce.Models;
 using SwCommerce.Services;
+using SwCommerce.Data;
 
 namespace SwCommerce
 {
@@ -35,10 +32,15 @@ namespace SwCommerce
 
             services.AddScoped<OfferService>();
 
+            services.AddScoped<SeedingService>();
+
+
             services.AddDbContext<SwCommerceContext>(options => 
                 options.UseMySql(Configuration.GetConnectionString("SwCommerceContext"),
                 builder => builder.MigrationsAssembly("SwCommerce")));
-
+            /*services.AddDbContext<SwCommerceContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SwCommerceContext")))
+            */
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -55,11 +57,12 @@ namespace SwCommerce
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed();
             }
 
             app.UseHttpsRedirection();
